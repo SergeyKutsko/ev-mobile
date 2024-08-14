@@ -52,5 +52,11 @@ allprojects {
         }
         google()
         maven { url "https://www.jitpack.io" }
+       jcenter()
+
+       mavenCentral()
+       maven {
+           url "https://github.com/Portmone/Android-e-Commerce-SDK/raw/master/"
+       }
     }
 }

@@ -22,6 +22,7 @@ import computeModalCommonStyles from '../../components/modal/ModalCommonStyle';
 import computeFabStyles from '../../components/fab/FabComponentStyles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import PortmoneSdk, { PaymentsParams } from '@kyivstarteam/react-native-ecom-portmone';
 
 export interface Props extends BaseProps {}
 
@@ -140,10 +141,16 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings, paymentMethodToBeDeleted } = this.state;
     const { navigation } = this.props;
     const fabStyles = computeFabStyles();
+
+    const portmone = new PortmoneSdk(I18n.locale);
+
     return (
       <View style={style.container}>
         {billingSettings?.stripe?.publicKey && (
           <SafeAreaView style={fabStyles.fabContainer}>
+            <TouchableOpacity onPress={() => portmone.initCardPayment('1185', '380971234567', 100, 'account')} style={fabStyles.fab}>
+              <Icon as={MaterialCommunityIcons} size={scale(36)} name={'credit-card-plus'} style={fabStyles.fabIcon} />
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={fabStyles.fab}>
               <Icon as={MaterialCommunityIcons} size={scale(18)} name={'plus'} style={fabStyles.fabIcon} />
             </TouchableOpacity>
