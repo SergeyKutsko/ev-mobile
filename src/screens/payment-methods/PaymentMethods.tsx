@@ -23,6 +23,7 @@ import computeFabStyles from '../../components/fab/FabComponentStyles';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+
 export interface Props extends BaseProps {}
 
 interface State extends SelectableState<BillingPaymentMethod> {
@@ -140,10 +141,12 @@ export default class PaymentMethods extends SelectableList<BillingPaymentMethod>
     const { paymentMethods, count, skip, limit, refreshing, loading, billingSettings, paymentMethodToBeDeleted } = this.state;
     const { navigation } = this.props;
     const fabStyles = computeFabStyles();
+
     return (
       <View style={style.container}>
         {billingSettings?.stripe?.publicKey && (
           <SafeAreaView style={fabStyles.fabContainer}>
+
             <TouchableOpacity onPress={() => navigation.navigate('StripePaymentMethodCreationForm', { billingSettings })} style={fabStyles.fab}>
               <Icon as={MaterialCommunityIcons} size={scale(18)} name={'plus'} style={fabStyles.fabIcon} />
             </TouchableOpacity>

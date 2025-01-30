@@ -1,10 +1,10 @@
 import { EndpointCloud } from '../types/Tenant';
 
 export default class Configuration {
-  public static readonly SERVER_URL_PREFIX = 'http://';
-  public static readonly URL_PREFIX = 'http://';
-  public static readonly AWS_REST_ENDPOINT_PROD = `${Configuration.SERVER_URL_PREFIX}10.0.2.2:81`;
-  public static readonly AWS_REST_ENDPOINT_QA = 'http://10.0.2.2:81';
+  public static readonly SERVER_URL_PREFIX = 'https://';
+  public static readonly URL_PREFIX = 'https://';
+  public static readonly AWS_REST_ENDPOINT_PROD = `${Configuration.SERVER_URL_PREFIX}ninja-charge.com.ua`;
+  public static readonly AWS_REST_ENDPOINT_QA = 'https://ninja-charge.com.ua';
 
   public static readonly CAPTCHA_SITE_KEY = '6Ld4VPwpAAAAADeVXxlYjRqTg57dCwQZ5oyxALkC';
   public static readonly DEFAULT_ENDPOINT_CLOUD_ID = 'aws';
