@@ -1,68 +1,56 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native-permissions/scripts/setup'
 
-platform :ios, '13'
-install! 'cocoapods', :deterministic_uuids => false
-$RNFirebaseAsStaticFramework = true
-use_frameworks! :linkage => :static
+platform :ios, '13.0'
 
-# Convert all permission pods into static libraries
-pre_install do |installer|
-  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
-  installer.pod_targets.each do |pod|
-    if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
-      def pod.build_type;
-        Pod::BuildType.static_library
-      end
-    end
-  end
+prepare_react_native_project!
+
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage && !linkage.empty?
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
 end
 
 target 'eMobility' do
-  project 'eMobility.xcodeproj'
-  
-  # Виклик use_native_modules! для отримання конфігурації
-  config = use_native_modules!
-  raise "use_native_modules! returned nil" if config.nil?
-  raise "reactNativePath is nil" if config[:reactNativePath].nil?
+  config = { reactNativePath: "../node_modules/react-native" }
 
-  # Flags change depending on the env values.
-  flags = get_default_flags()
+  setup_permissions([
+    'Camera',
+    'LocationWhenInUse',
+    'BluetoothPeripheral',
+    'Contacts',
+    'Notifications',
+  ])
 
+  puts "🔹 Config result: #{config.inspect}"
+  # 📌 Додаткові бібліотеки
+  pod 'react-native-permissions', :path => '../node_modules/react-native-permissions'
+  pod 'react-native-vision-camera', :path => '../node_modules/react-native-vision-camera'
+  # pod 'react-native-bluetooth-status', :path => '../node_modules/react-native-bluetooth-status'
+  pod 'react-native-contacts', :path => File.join(__dir__, '../node_modules/react-native-contacts')
+  pod 'react-native-community/geolocation', :path => '../node_modules/@react-native-community/geolocation'
+  pod 'react-native-push-notification', :path => '../node_modules/react-native-push-notification'
+  pod 'react-native-maps', path: '../node_modules/react-native-maps'
+
+
+  # 🔹 Налаштування React Native
   use_react_native!(
     :path => config[:reactNativePath],
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
     :hermes_enabled => false,
-    :fabric_enabled => false,
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :fabric_enabled => false
   )
 
-  # Camera Permission
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-
-  pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
-
-  target 'eMobilityTests' do
-    inherit! :complete
-  end
-
   post_install do |installer|
-    react_native_post_install(
-      installer,
-      :mac_catalyst_enabled => false
-    )
-    # Ваш код для post_install
-    `sed -e $'s/__IPHONE_10_0/__IPHONE_13_0/' \
-        Pods/RCT-Folly/folly/portability/Time.h > temp_file \
-        && mv temp_file Pods/RCT-Folly/folly/portability/Time.h`
-    
+    react_native_post_install(installer, config[:reactNativePath])
+
     installer.pods_project.targets.each do |target|
-      if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
-        target.build_configurations.each do |config|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+        if target.respond_to?(:product_type) && target.product_type == "com.apple.product-type.bundle"
           config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
         end
       end
     end

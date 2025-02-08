@@ -85,6 +85,7 @@
     "@formatjs/intl-relativetimeformat": "^11.1.4",
     "@ptomasroos/react-native-multi-slider": "github:0hio-creator/react-native-multi-slider",
     "@react-native-community/datetimepicker": "^6.7.0",
+    "@react-native-community/geolocation":"^3.4.0",
     "@react-native-firebase/app": "^21.7.1",
     "@react-native-firebase/messaging": "^21.7.1",
     "@react-navigation/drawer": "^6.5.1",
@@ -107,7 +108,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "native-base": "^2.15.2",
+    "native-base": "3.4.22",
     "react": "^18.1.0",
     "react-dom": "18.1.0",
     "react-native": "^0.77.0",
@@ -146,7 +147,7 @@
     "react-native-svg": "^13.6.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "^11.23.1",
-    "recompose": "^0.17.0",
+    "recompose": "^0.30.0",
     "rn-secure-storage": "^2.0.8",
     "tslib": "^2.4.1",
     "validate.js": "^0.13.1",
@@ -179,7 +180,7 @@
     "eslint": "^8.28.0",
     "eslint-define-config": "^1.12.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsdoc": "^50.6.3",
+    "eslint-plugin-jsdoc": "^39.6.2",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.31.11",
     "flow-bin": "^0.193.0",
@@ -191,7 +192,7 @@
     "metro": "^0.73.3",
     "metro-config": "^0.73.3",
     "metro-react-native-babel-preset": "^0.73.3",
-    "npm-check": "^3.2.10",
+    "npm-check": "^6.0.1",
     "patch-package": "^6.5.0",
     "prettier": "^2.7.1",
     "react-native-clean-project": "^4.0.1",
@@ -201,7 +202,7 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^29.2.5",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^5.7.3"
+    "typescript": "^4.9.3"
   },
   "jest-junit": {
     "outputDirectory": "./test-results"
