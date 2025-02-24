@@ -1,0 +1,73 @@
+source 'https://cdn.cocoapods.org/'
+
+def node_require(script)
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
+
+setup_permissions([
+  'Camera',
+  'LocationAlways',
+  'LocationWhenInUse',
+  'Notifications',
+  'PhotoLibrary',
+])
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+install! 'cocoapods', :deterministic_uuids => false
+
+target 'eMobility' do
+  config = use_native_modules!
+  # Flags change depending on the env values.
+  flags = get_default_flags()
+
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => false,
+    :fabric_enabled => false, #flags[:fabric_enabled],
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  # Camera Permission
+  # permissions_path = '../node_modules/react-native-permissions/ios'
+  # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  # pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+
+  pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
+
+  target 'eMobilityTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+  post_install do |installer|
+    react_native_post_install(installer)
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false
+    )
+      installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+    end
+  end
+
+end
