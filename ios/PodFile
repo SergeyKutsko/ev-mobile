@@ -41,7 +41,7 @@ target 'eMobility' do
   use_react_native!(
     :path => config[:reactNativePath],
     :hermes_enabled => false,
-    :fabric_enabled => false, #flags[:fabric_enabled],
+    :fabric_enabled => false,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
@@ -49,7 +49,6 @@ target 'eMobility' do
   # permissions_path = '../node_modules/react-native-permissions/ios'
   # pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   # pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-
   pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
 
   target 'eMobilityTests' do
