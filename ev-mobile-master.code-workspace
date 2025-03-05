@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "ev-mobile-master",
+			"path": "."
+		},
+		{
+			"name": "ios",
+			"path": "../../eMobility/ios"
+		}
+	],
+	"settings": {}
+}
