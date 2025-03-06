@@ -3,8 +3,9 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '13'
 install! 'cocoapods', :deterministic_uuids => false
-$RNFirebaseAsStaticFramework = true
-use_frameworks! :linkage => :static
+# $RNFirebaseAsStaticFramework = true
+# use_frameworks! :linkage => :static
+use_modular_headers!
 
 # Convert all permission pods into static libraries
 # Workaround to make react-native-permission work with use_frameworks! (See their doc)
@@ -39,7 +40,7 @@ target 'eMobility' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    # :flipper_configuration => FlipperConfiguration.enabled,
+    :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
@@ -61,9 +62,9 @@ target 'eMobility' do
           installer,
           # Set `mac_catalyst_enabled` to `true` in order to apply patches
           # necessary for Mac Catalyst builds
-          :mac_catalyst_enabled => false
+          :mac_catalyst_enabled => true
     )
-    #__apply_Xcode_12_5_M1_post_install_workaround(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
     `sed -e $'s/__IPHONE_10_0/__IPHONE_13_0/' \
         Pods/RCT-Folly/folly/portability/Time.h > temp_file \
         && mv temp_file Pods/RCT-Folly/folly/portability/Time.h`
@@ -74,10 +75,8 @@ target 'eMobility' do
             config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
             config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
             config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
-
         end
       end
-
     end
   `sed -e $'s/__IPHONE_10_0/__IPHONE_13_0/' \
         Pods/RCT-Folly/folly/portability/Time.h > temp_file \
