@@ -1,8 +1,9 @@
 {
   "name": "ev-mobile",
+  "packageManager": "yarn@1.22.22",
   "version": "2.6.10",
   "engines": {
-    "npm": ">=8.x.x"
+    "yarn": ">=1.12.12"
   },
   "repository": {
     "type": "git",

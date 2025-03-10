@@ -3,36 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* eMobilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* eMobilityTests.m */; };
-		454C967694AA25FC2FF00A3D /* Pods_eMobility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C343EB9CDA77B88D619993 /* Pods_eMobility.framework */; };
 		6757D1F528E5EFAA00CEE5E3 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6757D1F428E5EFAA00CEE5E3 /* BootSplash.storyboard */; };
 		6757D1F728E5F17200CEE5E3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6757D1F628E5F17200CEE5E3 /* Colors.xcassets */; };
 		678EDB65292BBFD600938E72 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 678EDB64292BBFD600938E72 /* AppDelegate.mm */; };
 		867FF435904C13293FDF5FA0 /* Pods_eMobility_eMobilityTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D35800B7997F9B7C2436712 /* Pods_eMobility_eMobilityTests.framework */; };
-		A56319112C60C7F2001DDAB3 /* XcodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A56319102C60C7F2001DDAB3 /* XcodeKit.framework */; };
-		A56319122C60C7F2001DDAB3 /* XcodeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A56319102C60C7F2001DDAB3 /* XcodeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D2336F7D23510E6F00A1BCB0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		D2336F9D23510E6F00A1BCB0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		D2D3C43A2469AFDC00D6DECE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A56319132C60C7F3001DDAB3 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A56319122C60C7F2001DDAB3 /* XcodeKit.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* eMobilityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = eMobilityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,8 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				454C967694AA25FC2FF00A3D /* Pods_eMobility.framework in Frameworks */,
-				A56319112C60C7F2001DDAB3 /* XcodeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,7 +180,6 @@
 				D2336FA123510E6F00A1BCB0 /* Bundle React Native code and images */,
 				829CDD9515C2444083F4EC9F /* [CP] Copy Pods Resources */,
 				111F15B48FEDE424A42537C0 /* [CP-User] [RNFB] Core Configuration */,
-				A56319132C60C7F3001DDAB3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -231,7 +211,7 @@
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "eMobility" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -239,6 +219,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				A56E49022D7F79DE0025393B /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -863,6 +846,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A56E49022D7F79DE0025393B /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }
