@@ -23,6 +23,7 @@ import CentralServerProvider from './provider/CentralServerProvider';
 import ProviderFactory from './provider/ProviderFactory';
 import Eula from './screens/auth/eula/Eula';
 import Login from './screens/auth/login/Login';
+import WelcomeScreen from './screens/auth/welcome/WelcomeScreen';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
 import RetrievePassword from './screens/auth/retrieve-password/RetrievePassword';
 import SignUp from './screens/auth/sign-up/SignUp';
@@ -129,7 +130,8 @@ function getTabStyle(): any {
 
 function AuthNavigator(props: BaseProps) {
   return (
-    <AuthStack.Navigator initialRouteName={'Login'} screenOptions={{ headerShown: false }}>
+    <AuthStack.Navigator initialRouteName="WelcomeScreen" screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       <AuthStack.Screen name="Login" component={Login} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="Tenants" component={Tenants} initialParams={props?.route?.params?.params} />
       <AuthStack.Screen name="TenantQrCode" component={TenantQrCode} initialParams={props?.route?.params?.params} />
@@ -140,6 +142,7 @@ function AuthNavigator(props: BaseProps) {
     </AuthStack.Navigator>
   );
 }
+
 
 function StatsNavigator(props: BaseProps) {
   return (

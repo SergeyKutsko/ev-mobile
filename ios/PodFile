@@ -5,6 +5,7 @@ platform :ios, '13'
 install! 'cocoapods', :deterministic_uuids => false
 $RNFirebaseAsStaticFramework = true
 use_frameworks! :linkage => :static
+# use_frameworks!
 
 # Convert all permission pods into static libraries
 # Workaround to make react-native-permission work with use_frameworks! (See their doc)
@@ -49,8 +50,14 @@ target 'eMobility' do
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 
-  pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
+  pod 'gRPC-Core', :modular_headers => false
+  pod 'BoringSSL-GRPC', :modular_headers => false
 
+  pod 'RNSecureStorage', :path => '../node_modules/rn-secure-storage/ios/RNSecureStorage.podspec'
+  # pod 'Firebase/Analytics', :modular_headers => true
+  # pod 'Firebase/Auth', :modular_headers => true
+  # pod 'Firebase/Core', :modular_headers => true
+  # pod 'Firebase/Firestore', :modular_headers => true
   target 'eMobilityTests' do
     inherit! :complete
     # Pods for testing
@@ -68,17 +75,36 @@ target 'eMobility' do
         Pods/RCT-Folly/folly/portability/Time.h > temp_file \
         && mv temp_file Pods/RCT-Folly/folly/portability/Time.h`
     ## Workaround for Stripe, see issue https://github.com/stripe/stripe-ios/issues/2012
-    installer.pods_project.targets.each do |target|
-      if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
-        target.build_configurations.each do |config|
-            config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
-            config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
-            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
-
+    post_install do |installer|
+      installer.pods_project.targets.each do |target|
+        # 🔹 Налаштування для FirebaseFirestore
+        if target.name == 'FirebaseFirestore'
+          target.build_configurations.each do |config|
+            config.build_settings['OTHER_CFLAGS'] ||= ['$(inherited)', '-Wno-attributes']
+          end
+        end
+    
+        # 🔹 Налаштування для BoringSSL-GRPC
+        if target.name == 'BoringSSL-GRPC'
+          target.source_build_phase.files.each do |file|
+            if file.settings && file.settings['COMPILER_FLAGS']
+              flags = file.settings['COMPILER_FLAGS'].split
+              flags.reject! { |flag| flag == '-GCC_WARN_INHIBIT_ALL_WARNINGS' }
+              file.settings['COMPILER_FLAGS'] = flags.join(' ')
+            end
+          end
+    
+          if target.respond_to?(:product_type) and target.product_type == "com.apple.product-type.bundle"
+            target.build_configurations.each do |config|
+              config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+              config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+              config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+            end
+          end
         end
       end
-
     end
+    
   `sed -e $'s/__IPHONE_10_0/__IPHONE_13_0/' \
         Pods/RCT-Folly/folly/portability/Time.h > temp_file \
         && mv temp_file Pods/RCT-Folly/folly/portability/Time.h`
