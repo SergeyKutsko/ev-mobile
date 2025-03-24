@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services' 
 
 if (file("../release.gradle").exists()) {
   apply from: file("../release.gradle")
@@ -149,7 +150,9 @@ android {
         versionCode 539
         versionName "2.7.6"
         missingDimensionStrategy 'react-native-camera', 'general'
-        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", 
+        multiDexEnabled true
+        isNewArchitectureEnabled().toString()
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {
