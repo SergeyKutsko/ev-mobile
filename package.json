@@ -118,6 +118,7 @@
     "react-native-camera": "^3.43.9",
     "react-native-charts-wrapper": "0.5.11",
     "react-native-check-version": "^1.0.20",
+    "react-native-confirmation-code-field": "^7.4.0",
     "react-native-deep-linking": "^2.2.0",
     "react-native-device-info": "^10.3.0",
     "react-native-elements": "^3.4.2",

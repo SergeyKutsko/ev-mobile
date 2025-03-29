@@ -2,8 +2,9 @@ import { CommonActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
 import { Icon, IIconProps, Spinner } from 'native-base';
 import React from 'react';
-import {Keyboard, Text, TextInput} from 'react-native';
-
+import {Keyboard, Text, TextInput, View, StyleSheet} from 'react-native';
+import { AuthStackParamList } from '../../../App/AuthNavigator';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import computeFormStyleSheet from '../../../FormStyles';
 import ReactNativeRecaptchaV3 from '../../../re-captcha/ReactNativeRecaptchaV3';
 import BaseProps from '../../../types/BaseProps';
@@ -17,13 +18,12 @@ import { StatusCodes } from 'http-status-codes';
 import { TenantConnection } from '../../../types/Tenant';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { scale } from 'react-native-size-matters';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Button, Input, CheckBox} from 'react-native-elements';
 import HeaderComponent from '../../../components/header/HeaderComponent';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-export interface Props extends BaseProps {}
+type SignUpProps = NativeStackScreenProps<AuthStackParamList, 'SignUp'>;
 
 interface State {
   tenantSubDomain?: string;
@@ -32,8 +32,9 @@ interface State {
   name?: string;
   firstName?: string;
   email?: string;
-  password?: string;
-  repeatPassword?: string;
+  phoneNumber: string;
+  password: string;
+  repeatPassword: string;
   eula?: boolean;
   captchaSiteKey?: string;
   captchaBaseUrl?: string;
@@ -45,13 +46,15 @@ interface State {
   performSignUp?: boolean;
 }
 
-export default class SignUp extends BaseScreen<Props, State> {
+export default class SignUp extends BaseScreen<Props, State, SignUpProps> {
   public state: State;
   public props: Props;
+  private phoneNumberInput: TextInput;
   private passwordInput: TextInput;
   private firstNameInput: TextInput;
   private emailInput: TextInput;
   private repeatPasswordInput: TextInput;
+  public props: navigation;
 
   public constructor(props: Props) {
     super(props);
@@ -62,6 +65,11 @@ export default class SignUp extends BaseScreen<Props, State> {
       name: '',
       firstName: '',
       email: '',
+      phoneNumber: '',
+      password: '',
+      repeatPassword: '',
+      eula: false,
+      captchaSiteKey: null,
       password: '',
       repeatPassword: '',
       eula: false,
@@ -133,7 +141,7 @@ export default class SignUp extends BaseScreen<Props, State> {
 
   public async signUp(): Promise<void> {
     // Check field
-    const { tenantSubDomain, name, firstName, email, password, eula, captcha } = this.state;
+    const { tenantSubDomain, name, firstName, email, password,phoneNumber, eula, captcha } = this.state;
     const formIsValid = this.isFormValid();
     // Force captcha regeneration for next signUp click
     if (formIsValid && captcha) {
@@ -147,6 +155,7 @@ export default class SignUp extends BaseScreen<Props, State> {
           email,
           Utils.getDeviceDefaultSupportedLocale(),
           password,
+          phoneNumber,
           eula,
           captcha
         );
@@ -160,7 +169,7 @@ export default class SignUp extends BaseScreen<Props, State> {
             index: 0,
             routes: [
               {
-                name: 'Login',
+                name: 'SignUp',
                 params: {
                   tenantSubDomain: this.state.tenantSubDomain,
                   email: this.state.email
@@ -214,6 +223,7 @@ export default class SignUp extends BaseScreen<Props, State> {
       name,
       firstName,
       email,
+      phoneNumber,
       password,
       repeatPassword,
       performSignUp } = this.state;
@@ -223,45 +233,29 @@ export default class SignUp extends BaseScreen<Props, State> {
     ) : (
       <SafeAreaView edges={['bottom']} style={style.container}>
         <HeaderComponent containerStyle={style.headerContainer} navigation={this.props.navigation} title={I18n.t('authentication.signUp')} />
-        <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} containerStyle={{marginHorizontal: '5%', marginBottom: scale(10)}} />
+       {/* <AuthHeader navigation={this.props.navigation} tenantName={tenantName} tenantLogo={tenantLogo} containerStyle={{marginHorizontal: '5%', marginBottom: scale(10)}} />*/}
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'} bounces={false} persistentScrollbar={true} contentContainerStyle={style.scrollViewContentContainer} style={style.scrollView}>
-          <Input
-            leftIcon={<InputIcon as={MaterialIcons} name="person" />}
-            containerStyle={formStyle.inputContainer}
-            inputStyle={formStyle.inputText}
-            inputContainerStyle={formStyle.inputTextContainer}
-            value={name}
-            placeholder={I18n.t('authentication.name')}
-            placeholderTextColor={commonColor.placeholderTextColor}
-            autoCapitalize="characters"
-            autoCorrect={false}
-            autoComplete={'name-family'}
-            textContentType={'familyName'}
-            keyboardType={'default'}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.firstNameInput.focus()}
-            renderErrorMessage={false}
-            onChangeText={(newName) => this.setState({ name: newName })}
-          />
-          <Input
-            ref={(ref: TextInput) => (this.firstNameInput = ref)}
-            leftIcon={<InputIcon as={MaterialIcons} name="person" />}
-            containerStyle={formStyle.inputContainer}
-            inputStyle={formStyle.inputText}
-            inputContainerStyle={formStyle.inputTextContainer}
-            value={firstName}
-            placeholder={I18n.t('authentication.firstName')}
-            placeholderTextColor={commonColor.placeholderTextColor}
-            autoCapitalize="words"
-            autoCorrect={false}
-            autoComplete={'name'}
-            textContentType={'name'}
-            keyboardType={'default'}
-            returnKeyType={'next'}
-            onSubmitEditing={() => this.emailInput.focus()}
-            renderErrorMessage={false}
-            onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
-          />
+     <View style={styles.mainWrapper}>
+     <Text style={styles.mainTitle}> Зареєструватись</Text>
+        {/*          // <Input
+          //   ref={(ref: TextInput) => (this.firstNameInput = ref)}
+          //   leftIcon={<InputIcon as={MaterialIcons} name="person" />}
+          //   containerStyle={formStyle.inputContainer}
+          //   inputStyle={formStyle.inputText}
+          //   inputContainerStyle={formStyle.inputTextContainer}
+          //   value={firstName}
+          //   placeholder={I18n.t('authentication.firstName')}
+          //   placeholderTextColor={commonColor.placeholderTextColor}
+          //   autoCapitalize="words"
+          //   autoCorrect={false}
+          //   autoComplete={'name'}
+          //   textContentType={'name'}
+          //   keyboardType={'default'}
+          //   returnKeyType={'next'}
+          //   onSubmitEditing={() => this.emailInput.focus()}
+          //   renderErrorMessage={false}
+          //   onChangeText={(newFirstName) => this.setState({ firstName: newFirstName })}
+          // />
           <Input
             ref={(ref: TextInput) => (this.emailInput = ref)}
             leftIcon={<InputIcon  name="email" as={MaterialCommunityIcons} />}
@@ -281,6 +275,60 @@ export default class SignUp extends BaseScreen<Props, State> {
             renderErrorMessage={false}
             onChangeText={(newEmail) => this.setState({ email: newEmail })}
           />
+         
+        <Input
+          ref={(ref: TextInput) => (this.phoneNumberInput = ref)}
+          leftIconContainerStyle={{leftIcon={<InputIcon name="phone" as={MaterialCommunityIcons}}}}{<Text>+380</Text>}}
+           />}
+          
+          containerStyle={formStyle.inputContainer}
+          label={"Номер телефону"}
+          labelStyle={{marginBottom:4, color:"#c7c7c7", }}
+            inputStyle={formStyle.inputText}
+            inputContainerStyle={[formStyle.inputTextContainer, !Utils.validatePassword(password) && formStyle.inputTextContainerError]}
+            value={phoneNumber}
+            placeholder={I18n.t('authentication.phoneNumber')}
+            placeholderTextColor={commonColor.placeholderTextColor}
+            autoCapitalize="none"
+            autoCorrect={false}
+            // secureTextEntry={hidePassword}
+            textContentType={'phoneNumber'}
+            keyboardType={'number-pad'}
+            returnKeyType={'next'}
+            onSubmitEditing={() => this.phoneNumberInput.focus()}
+            renderErrorMessage={!Utils.validatePassword(password)}
+            // errorMessage={!Utils.validatePassword(password) ? I18n.t('authentication.phoneNumber') : null}
+            errorStyle={formStyle.inputError}
+            onChangeText={(text) => this.setState({ phoneNumber: text })}
+        />
+ */}
+ <Input
+ ref={(ref: TextInput) => { this.phoneNumberInput = ref; }}
+ leftIcon={<InputIcon name="phone" as={MaterialCommunityIcons} />}
+ containerStyle={formStyle.inputContainer}
+ label="Номер телефону"
+ labelStyle={{ marginBottom: 4, color: "#4d4c4c" }}
+ inputStyle={formStyle.inputText}
+ inputContainerStyle={[
+   formStyle.inputTextContainer,
+   !Utils.validatePassword(password) && formStyle.inputTextContainerError,
+ ]}
+ value={phoneNumber}
+ placeholder="+380-11-11-111"
+ placeholderTextColor={commonColor.placeholderTextColor}
+ autoCapitalize="none"
+ autoCorrect={false}
+ textContentType="telephoneNumber"
+ keyboardType="number-pad"
+ returnKeyType="next"
+ onSubmitEditing={() => this.phoneNumberInput.focus()}
+ renderErrorMessage={!Utils.validatePassword(password)}
+ errorStyle={formStyle.inputError}
+ onChangeText={(text) => this.setState({ phoneNumber: text })}
+/>
+
+        
+
           <Input
             ref={(ref: TextInput) => (this.passwordInput = ref)}
             leftIcon={<InputIcon name="lock" as={MaterialCommunityIcons} />}
@@ -291,9 +339,11 @@ export default class SignUp extends BaseScreen<Props, State> {
             />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
+            label={"Пароль"}
+            labelStyle={{marginBottom:4, color:"#4d4c4c" }}
             inputContainerStyle={[formStyle.inputTextContainer, !Utils.validatePassword(password) && formStyle.inputTextContainerError]}
             value={password}
-            placeholder={I18n.t('authentication.password')}
+            placeholder={("******")}
             placeholderTextColor={commonColor.placeholderTextColor}
             autoCapitalize="none"
             autoCorrect={false}
@@ -317,9 +367,11 @@ export default class SignUp extends BaseScreen<Props, State> {
             />}
             containerStyle={formStyle.inputContainer}
             inputStyle={formStyle.inputText}
+            label={"Повторити пароль"}
+            labelStyle={{marginBottom:4, color:"#4d4c4c"}}
             inputContainerStyle={[formStyle.inputTextContainer, !this.checkPasswords() && formStyle.inputTextContainerError]}
             value={repeatPassword}
-            placeholder={I18n.t('authentication.repeatPassword')}
+            placeholder={("******")}
             placeholderTextColor={commonColor.placeholderTextColor}
             autoCapitalize="none"
             autoCorrect={false}
@@ -332,8 +384,9 @@ export default class SignUp extends BaseScreen<Props, State> {
             errorStyle={formStyle.inputError}
             onChangeText={(text) => this.setState({ repeatPassword: text })}
           />
+          {/* <OTPInput/>*/}
           <CheckBox
-            containerStyle={[formStyle.checkboxContainer, style.checkboxContainer]}
+            containerStyle={[formStyle.checkboxContainer, style.checkboxContainer={display: 'flex'}]}
             textStyle={{backgroundColor: 'transparent'}}
             checked={eula}
             onPress={() => this.setState({ eula: !eula })}
@@ -349,17 +402,19 @@ export default class SignUp extends BaseScreen<Props, State> {
             checkedIcon={<InputIcon size={scale(25)} name="checkbox-outline" as={MaterialCommunityIcons} />}
           />
           <Button
-            title={I18n.t('authentication.createAccount')}
+            title={I18n.t('authentication.next')}
             titleStyle={formStyle.buttonTitle}
-            disabled={!this.isFormValid()}
+            // disabled={this.isFormValid()}
             disabledStyle={formStyle.buttonDisabled}
             disabledTitleStyle={formStyle.buttonTextDisabled}
-            containerStyle={formStyle.buttonContainer}
+            containerStyle={formStyle.buttonContainer={display: 'flex'}}
             buttonStyle={formStyle.button}
             loading={signingUp}
             loadingProps={{color: commonColor.light}}
-            onPress={() => this.setState({performSignUp: true, signingUp: true })}
+            // onPress={() => this.setState({performSignUp: true, signingUp: true })}
+            onPress={() => navigation.navigate('OTPScreen')}
           />
+          </View>
           {!captcha && captchaSiteKey && captchaBaseUrl && performSignUp && (
             <ReactNativeRecaptchaV3
               action="RegisterUser"
@@ -383,3 +438,22 @@ export default class SignUp extends BaseScreen<Props, State> {
     return !!name && !!firstName && !!email && !!password && !!repeatPassword && eula && this.checkPasswords() && Utils.validatePassword(password);
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+
+  },
+
+  mainWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: scale(10),
+  },
+  mainTitle: {
+    fontSize: scale(24),
+    fontWeight: 'bold',
+    marginBottom: scale(60),
+    textAlign: 'center',
+    color: '#212121'
+  },
+  })
