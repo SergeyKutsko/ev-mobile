@@ -129,6 +129,7 @@
     "authenticationFailed": "Authentication Failed",
     "invalidCaptcha": "The captcha has been refused (security)!",
     "wrongEmail": "Wrong email!",
+    "next": "Next",
     "emailAlreadyExists": "Email already exist",
     "registerUnexpectedError": "Cannot create account",
     "accountLocked": "Your account is locked",

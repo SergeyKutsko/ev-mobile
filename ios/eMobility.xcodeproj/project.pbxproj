@@ -12,6 +12,7 @@
 		6757D1F728E5F17200CEE5E3 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6757D1F628E5F17200CEE5E3 /* Colors.xcassets */; };
 		678EDB65292BBFD600938E72 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 678EDB64292BBFD600938E72 /* AppDelegate.mm */; };
 		867FF435904C13293FDF5FA0 /* Pods_eMobility_eMobilityTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D35800B7997F9B7C2436712 /* Pods_eMobility_eMobilityTests.framework */; };
+		C23B6E4190B3F5F7D5CA3244 /* Pods_eMobility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31C343EB9CDA77B88D619993 /* Pods_eMobility.framework */; };
 		D2336F7D23510E6F00A1BCB0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		D2336F9D23510E6F00A1BCB0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		D2D3C43A2469AFDC00D6DECE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2D3C4392469AFDC00D6DECE /* GoogleService-Info.plist */; };
@@ -54,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23B6E4190B3F5F7D5CA3244 /* Pods_eMobility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
