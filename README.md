@@ -1,93 +1,167 @@
 <img src="https://user-images.githubusercontent.com/32574035/193282473-32e9490b-3d03-4826-a819-872b6c2a0898.png" alt="drawing" width="200"/>
 
-
 # Open e-Mobility React-Native Mobile App
 
-## Summary
+## Required Versions & Tools 🛠
 
-This application is the Electric Vehicle Charging Station (EVSE) mobile application for Android and iOS.
+- Node.js: 18.20.7 (via nvm)
+- React Native CLI: 0.70.8
+- Ruby: 2.7.5
+- Xcode: 16.2
+- Firebase: 16.4.5
+- Android SDK: 33
+- Package Manager: yarn
 
-It's linked to the Open e-Mobility backend: https://github.com/sap-labs-france/ev-server
+## Installation Steps 📥
 
-**App Stores**
+### 1. Environment Setup
+```bash
+# Install Homebrew if not installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-<a href="https://play.google.com/store/apps/details?id=com.emobility" target="_blank">Google Play</a>
+# Install NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
-<a href="https://apps.apple.com/us/app/e-mobility/id1443813480?ls=1" target="_blank">Apple Store</a>
+# Install Node
+nvm install 18.20.7
+nvm use 18.20.7
 
-**Contact the author** <a href="https://www.linkedin.com/in/serge-fabiano-a420a218/" target="_blank">Serge FABIANO</a>
+# Install yarn
+npm install -g yarn
 
-## NPM and Cocoapods
+2. Project Setup
+# Clone repository
+git clone <repository-url>
+cd ev-mobile
 
-The project now uses npm 8.x and cocoapods 1.11.2
+# Install dependencies
+yarn
 
-## Installation
+# Install pods
+cd ios
+pod install
+cd ..
 
-* Install NodeJS: https://nodejs.org/ (install the LTS version)
-* Install Java SE Development Kit 8
-* Install React Native: https://facebook.github.io/react-native/
-  ```
-  npm install -g react-native-cli
-  ```
-* Install Android Studio: https://developer.android.com/studio/
-  * Ensure Android SDK Platform 28 and Intel x86 Atom_64 System Image are checked in the SDK manager.
-  * Windows:
-    * Add user environment variable:
-      **ANDROID_HOME=C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk**
-    * Add **C:\Users\YOUR_USERNAME\AppData\Local\Android\Sdk\platform-tools** to user paths
-  * OSX/*nix:
-    * Add to your shell profile:
-    ```bash
-    export ANDROID_HOME=$HOME/Library/Android/sdk
-    export PATH=$PATH:$ANDROID_HOME/emulator
-    export PATH=$PATH:$ANDROID_HOME/tools
-    export PATH=$PATH:$ANDROID_HOME/tools/bin
-    export PATH=$PATH:$ANDROID_HOME/platform-tools
-    ```
-* Install Xcode: https://developer.apple.com/xcode/
-* Clone this GitHub project
-* Go into the **ev-mobile** directory and run **npm install** or **yarn install**
+# Start Metro
+yarn start
 
-**NOTE**:
+# In new terminal for iOS
+yarn ios
 
-* On Windows with **chocolatey** (https://chocolatey.org/), do as an administrator:
+Running the App 🚀
+iOS
 
-```powershell
-choco install -y nodejs-lts jdk8 androidstudio
-```
+# Install pods
+cd ios
+pod install
+cd ..
 
-* On Mac OSX with **Homebrew** (https://brew.sh/), do:
+# Start Metro
+yarn start
 
-```shell
-brew install node openjdk cocoapods react-native-cli watchman android-studio
-```
+# In new terminal for iOS
+yarn ios
 
-## Running the application on a virtual device
+Important iOS Note ⚠️
+Open ios/YourProject.xcworkspace in Xcode
+If error appears: hover → scroll down → click "Fix"
+Build project (Command + B)
 
-Open a terminal in the **ev-mobile** directory
+Android:
+# Start Metro
+yarn start
 
-* Install CocoaPods on Mac OSX:
+# In new terminal
+yarn android
 
-  ```shell
-  npm run pod:install
-  ```
+Troubleshooting 🔧
+iOS Issues
 
-* Run on Android:
+# Clean and reinstall pods
+cd ios
+pod deintegrate
+pod install
+cd ..
 
-  ```shell
-  npm run build:prepare
-  npm run android
-  ```
+# Clear cache
+yarn start --reset-cache
 
-* Run on iOS:
+Android Issues
+# Clean Gradle
+cd android
+./gradlew clean
+cd ..
 
-  ```shell
-  npm run build:prepare
-  npm run ios
-  ```
+# Reset Metro cache
+yarn start --reset-cache
+
+Environment Requirements
+iOS:
+Xcode 16.2
+iOS Simulator
+CocoaPods
+
+Android:
+Android Studio
+SDK 33
+Configured emulator
+
+
+Useful Commands 🛠
+# Check versions
+node -v
+yarn -v
+react-native --version
+
+# Clear watchman
+watchman watch-del-all
+
+Backend
+Connected to Open e-Mobility backend: https://github.com/sap-labs-france/ev-server
 
 ## License
 
 This file and all other files in this repository are licensed under the Apache Software License, v.2 and copyrighted under the copyright in [NOTICE](NOTICE) file, except as noted otherwise in the [LICENSE](LICENSE) file.
 
 Please note that the mobile application can contain other software which may be licensed under different licenses.
+
+# Learning Outcomes 📚
+
+Through this React Native project, I gained experience in:
+
+## Development Skills
+- React Native cross-platform mobile development
+- TypeScript implementation in mobile apps
+- Firebase integration and authentication flows
+- OTP verification system implementation
+- Native module bridging for iOS and Android
+
+## Development Tools
+- Version control with Git
+- Package management with yarn
+- iOS development with Xcode
+- Android development with Android Studio
+- Terminal command line usage
+
+## Mobile Development Concepts
+- Mobile app navigation architecture
+- State management in React Native
+- Platform-specific code management
+- Mobile UI/UX best practices
+- App deployment processes
+
+## Technical Skills
+- Setting up development environments
+- Managing dependencies with CocoaPods
+- Android SDK and Gradle configuration
+- iOS build process and signing
+- Debugging mobile applications
+
+## Project Management
+- Version control workflows
+- Project documentation
+- Development environment setup
+- Cross-platform compatibility
+- Mobile app testing strategies
+
+This project provided hands-on experience with modern mobile development tools, frameworks, and best practices while building a production-ready application.
